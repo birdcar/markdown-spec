@@ -1,0 +1,67 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "list",
+      "ordered": false,
+      "children": [
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "open" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "open" },
+            { "type": "text", "value": "Open task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "done" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "done" },
+            { "type": "text", "value": "Completed task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "scheduled" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "scheduled" },
+            { "type": "text", "value": "Scheduled task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "migrated" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "migrated" },
+            { "type": "text", "value": "Migrated task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "irrelevant" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "irrelevant" },
+            { "type": "text", "value": "Irrelevant task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "event" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "event" },
+            { "type": "text", "value": "Event task" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "priority" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "priority" },
+            { "type": "text", "value": "Priority task" }
+          ]}]
+        }
+      ]
+    }
+  ]
+}

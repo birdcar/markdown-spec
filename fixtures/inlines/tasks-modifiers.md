@@ -1,0 +1,6 @@
+- [>] Call the dentist //due:2025-03-01
+- [ ] Quarterly review //every:quarter
+- [>] Follow up with Sarah //around:2025-03 //wait
+- [o] Team retro //due:2025-02-07 //every:2-weeks
+- [ ] Run backups //cron:0 9 * * 1
+- [!] File taxes //due:2025-04-15 //hard

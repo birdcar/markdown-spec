@@ -1,0 +1,71 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "list",
+      "ordered": false,
+      "children": [
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "scheduled" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "scheduled" },
+            { "type": "text", "value": "Call the dentist " },
+            { "type": "task_modifier", "key": "due", "value": "2025-03-01" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "open" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "open" },
+            { "type": "text", "value": "Quarterly review " },
+            { "type": "task_modifier", "key": "every", "value": "quarter" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "scheduled" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "scheduled" },
+            { "type": "text", "value": "Follow up with Sarah " },
+            { "type": "task_modifier", "key": "around", "value": "2025-03" },
+            { "type": "text", "value": " " },
+            { "type": "task_modifier", "key": "wait", "value": null }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "event" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "event" },
+            { "type": "text", "value": "Team retro " },
+            { "type": "task_modifier", "key": "due", "value": "2025-02-07" },
+            { "type": "text", "value": " " },
+            { "type": "task_modifier", "key": "every", "value": "2-weeks" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "open" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "open" },
+            { "type": "text", "value": "Run backups " },
+            { "type": "task_modifier", "key": "cron", "value": "0 9 * * 1" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "priority" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "priority" },
+            { "type": "text", "value": "File taxes " },
+            { "type": "task_modifier", "key": "due", "value": "2025-04-15" },
+            { "type": "text", "value": " " },
+            { "type": "task_modifier", "key": "hard", "value": null }
+          ]}]
+        }
+      ]
+    }
+  ]
+}

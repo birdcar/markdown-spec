@@ -1,0 +1,148 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "depth": 1,
+      "children": [
+        { "type": "text", "value": "Weekly Review" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Hey " },
+        { "type": "mention", "identifier": "team" },
+        { "type": "text", "value": ", here's where we stand." }
+      ]
+    },
+    {
+      "type": "directive_block",
+      "name": "callout",
+      "params": { "title": "Sprint Goal", "type": "info" },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            { "type": "text", "value": "Ship the new " },
+            { "type": "strong", "children": [{ "type": "text", "value": "dashboard" }] },
+            { "type": "text", "value": " by Friday. See the " },
+            {
+              "type": "link",
+              "url": "https://example.com",
+              "children": [{ "type": "text", "value": "design spec" }]
+            },
+            { "type": "text", "value": "." }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        { "type": "text", "value": "Tasks" }
+      ]
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "children": [
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "done" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "done" },
+            { "type": "text", "value": "Finalize API contracts" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "priority" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "priority" },
+            { "type": "text", "value": "Fix auth regression #security " },
+            { "type": "task_modifier", "key": "due", "value": "2025-02-07" },
+            { "type": "text", "value": " " },
+            { "type": "task_modifier", "key": "hard", "value": null }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "scheduled" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "scheduled" },
+            { "type": "text", "value": "Update documentation " },
+            { "type": "task_modifier", "key": "due", "value": "2025-02-14" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "open" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "open" },
+            { "type": "text", "value": "Write integration tests " },
+            { "type": "task_modifier", "key": "every", "value": "weekly" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "event" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "event" },
+            { "type": "text", "value": "Sprint review " },
+            { "type": "task_modifier", "key": "due", "value": "2025-02-07" },
+            { "type": "text", "value": " " },
+            { "type": "task_modifier", "key": "every", "value": "2-weeks" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "migrated" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "migrated" },
+            { "type": "text", "value": "Migrate legacy endpoints ->q2-backlog" }
+          ]}]
+        },
+        {
+          "type": "list_item",
+          "attributes": { "data-task": "irrelevant" },
+          "children": [{ "type": "paragraph", "children": [
+            { "type": "task_marker", "state": "irrelevant" },
+            { "type": "text", "value": "Remove feature flag (already done by " },
+            { "type": "mention", "identifier": "sarah" },
+            { "type": "text", "value": ")" }
+          ]}]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        { "type": "text", "value": "Reference" }
+      ]
+    },
+    {
+      "type": "directive_block",
+      "meta": { "caption": "Sprint demo recording." },
+      "name": "embed",
+      "params": { "url": "https://www.youtube.com/watch?v=example" }
+    },
+    {
+      "type": "directive_block",
+      "name": "callout",
+      "params": { "type": "warning" },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            { "type": "text", "value": "The staging environment will be " },
+            { "type": "strong", "children": [{ "type": "text", "value": "down" }] },
+            { "type": "text", "value": " for maintenance Saturday." }
+          ]
+        }
+      ]
+    }
+  ]
+}

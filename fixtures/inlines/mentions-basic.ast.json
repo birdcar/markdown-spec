@@ -1,0 +1,17 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Hey " },
+        { "type": "mention", "identifier": "sarah" },
+        { "type": "text", "value": ", can you review this? Also cc " },
+        { "type": "mention", "identifier": "john.doe" },
+        { "type": "text", "value": " and " },
+        { "type": "mention", "identifier": "dev-team" },
+        { "type": "text", "value": "." }
+      ]
+    }
+  ]
+}

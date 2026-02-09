@@ -1,0 +1,7 @@
+- [ ] Open task
+- [x] Completed task
+- [>] Scheduled task
+- [<] Migrated task
+- [-] Irrelevant task
+- [o] Event task
+- [!] Priority task

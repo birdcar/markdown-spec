@@ -1,0 +1,20 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "directive_block",
+      "name": "callout",
+      "params": { "title": "Watch Out", "type": "warning" },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            { "type": "text", "value": "This is a warning with " },
+            { "type": "strong", "children": [{ "type": "text", "value": "bold" }] },
+            { "type": "text", "value": " text." }
+          ]
+        }
+      ]
+    }
+  ]
+}
