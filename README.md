@@ -6,10 +6,14 @@ Canonical specification and shared test fixture suite for BFM — a custom markd
 
 BFM is a superset of CommonMark and GFM (minus GFM task lists) that adds:
 
+- **YAML front-matter** — `---` delimited metadata blocks parsed into structured data
 - **Directive blocks** — `@callout`/`@endcallout`, `@embed`/`@endembed`
 - **Extended task lists** — `[x]`, `[>]`, `[<]`, `[-]`, `[o]`, `[!]` state markers
 - **Task modifiers** — `//due:2025-03-01`, `//every:quarter`, `//hard`
 - **Mentions** — `@username` inline references
+- **Hashtags** — `#project` inline tags
+- **Metadata extraction** — computed fields (word count, reading time, tasks, tags, links)
+- **Document merging** — deep recursive merge of front-matter across files
 
 See `bfm-spec.md` for the full specification.
 
@@ -22,11 +26,12 @@ See `bfm-spec.md` for the full specification.
 
 ## Fixture Suite
 
-Both implementations test against the shared fixture suite in `fixtures/`. Each fixture is a set of 2-3 files:
+Both implementations test against the shared fixture suite in `fixtures/`. Each fixture is a set of related files:
 
 - `{name}.md` — Input BFM markdown
 - `{name}.ast.json` — Expected normalized AST as JSON
 - `{name}.html` — Expected default HTML output
+- `{name}.metadata.json` — Expected metadata extraction result (metadata fixtures only)
 
 ### AST Format
 
@@ -49,9 +54,21 @@ fixtures/
     tasks-basic.*
     tasks-modifiers.*
     mentions-basic.*
+    hashtags-basic.*
+    hashtags-edge-cases.*
   blocks/           # Block-level features
     callout-basic.*
+    frontmatter-basic.*
+    frontmatter-empty.*
+    frontmatter-complex.*
     kitchen-sink.*
+  metadata/         # Metadata extraction
+    tasks-extraction.*
+    tags-extraction.*
+    computed-fields.*
+  merge/            # Document merging
+    a.md, b.md, ab-merged.*
+    deep-a.md, deep-b.md, deep-ab-merged.md
 ```
 
 ## Adding Fixtures
