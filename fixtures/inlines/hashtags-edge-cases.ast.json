@@ -1,0 +1,52 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "depth": 1,
+      "children": [
+        { "type": "text", "value": "This is a heading, not a hashtag" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "A paragraph with " },
+        { "type": "hashtag", "identifier": "valid" },
+        { "type": "text", "value": " hashtag." }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Inline code " },
+        { "type": "inlineCode", "value": "#not-a-hashtag" },
+        { "type": "text", "value": " should not parse." }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Adjacent to mention: " },
+        { "type": "mention", "identifier": "sarah" },
+        { "type": "text", "value": " " },
+        { "type": "hashtag", "identifier": "project-x" },
+        { "type": "text", "value": " together." }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "No space needed after punctuation: (" },
+        { "type": "hashtag", "identifier": "parenthesized" },
+        { "type": "text", "value": ") works." }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Not mid-word: foo#bar should not parse." }
+      ]
+    }
+  ]
+}

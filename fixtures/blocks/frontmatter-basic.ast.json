@@ -1,0 +1,20 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "yaml",
+      "value": "title: Hello World\nauthor: nick\ntags:\n  - bfm\n  - markdown",
+      "data": {
+        "title": "Hello World",
+        "author": "nick",
+        "tags": ["bfm", "markdown"]
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "This is body content." }
+      ]
+    }
+  ]
+}

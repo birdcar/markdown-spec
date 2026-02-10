@@ -1,0 +1,32 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "yaml",
+      "value": "title: Complex Front-matter\ncount: 42\nrating: 4.5\ndraft: true\nnothing: null\nauthor:\n  name: Nick\n  email: nick@birdcar.dev\ntags:\n  - bfm\n  - markdown\n  - spec\nnested:\n  level1:\n    level2: deep",
+      "data": {
+        "title": "Complex Front-matter",
+        "count": 42,
+        "rating": 4.5,
+        "draft": true,
+        "nothing": null,
+        "author": {
+          "name": "Nick",
+          "email": "nick@birdcar.dev"
+        },
+        "tags": ["bfm", "markdown", "spec"],
+        "nested": {
+          "level1": {
+            "level2": "deep"
+          }
+        }
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Content with complex front-matter." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "yaml",
+      "value": "key1: value1\nkeyA: valueB\ntags:\n  - arrValue1\n  - arrValue2\n  - arrValueA\n  - arrValueB",
+      "data": {
+        "key1": "value1",
+        "keyA": "valueB",
+        "tags": ["arrValue1", "arrValue2", "arrValueA", "arrValueB"]
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "This is markdown from file " },
+        { "type": "inlineCode", "value": "a.md" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "This is markdown from file " },
+        { "type": "inlineCode", "value": "b.md" }
+      ]
+    }
+  ]
+}

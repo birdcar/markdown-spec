@@ -1,0 +1,25 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "This is a paragraph with " },
+        { "type": "hashtag", "identifier": "typescript" },
+        { "type": "text", "value": " and " },
+        { "type": "hashtag", "identifier": "react" },
+        { "type": "text", "value": " hashtags." }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "A " },
+        { "type": "hashtag", "identifier": "multi-word" },
+        { "type": "text", "value": " tag and " },
+        { "type": "hashtag", "identifier": "with_underscores" },
+        { "type": "text", "value": " work too." }
+      ]
+    }
+  ]
+}

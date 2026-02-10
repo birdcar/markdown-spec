@@ -1,0 +1,16 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "yaml",
+      "value": "",
+      "data": {}
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Body after empty front-matter." }
+      ]
+    }
+  ]
+}

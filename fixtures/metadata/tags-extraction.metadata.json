@@ -1,0 +1,22 @@
+{
+  "frontmatter": {
+    "tags": ["bfm", "markdown"]
+  },
+  "computed": {
+    "wordCount": 12,
+    "readingTime": 1,
+    "tasks": {
+      "all": [],
+      "open": [],
+      "done": [],
+      "scheduled": [],
+      "migrated": [],
+      "irrelevant": [],
+      "event": [],
+      "priority": []
+    },
+    "tags": ["bfm", "markdown", "typescript", "react"],
+    "links": []
+  },
+  "custom": {}
+}

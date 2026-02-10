@@ -1,0 +1,44 @@
+{
+  "frontmatter": {
+    "title": "Task Extraction Test"
+  },
+  "computed": {
+    "wordCount": 22,
+    "readingTime": 1,
+    "tasks": {
+      "all": [
+        { "text": "Open task one", "state": "open", "modifiers": [], "line": 6 },
+        { "text": "Completed task", "state": "done", "modifiers": [], "line": 7 },
+        { "text": "Scheduled meeting", "state": "scheduled", "modifiers": [{ "key": "due", "value": "2025-03-01" }], "line": 8 },
+        { "text": "Migrated to backlog", "state": "migrated", "modifiers": [], "line": 9 },
+        { "text": "No longer relevant", "state": "irrelevant", "modifiers": [], "line": 10 },
+        { "text": "Team standup", "state": "event", "modifiers": [{ "key": "every", "value": "weekdays" }], "line": 11 },
+        { "text": "Critical bug", "state": "priority", "modifiers": [{ "key": "due", "value": "2025-02-15" }, { "key": "hard", "value": null }], "line": 12 }
+      ],
+      "open": [
+        { "text": "Open task one", "state": "open", "modifiers": [], "line": 6 }
+      ],
+      "done": [
+        { "text": "Completed task", "state": "done", "modifiers": [], "line": 7 }
+      ],
+      "scheduled": [
+        { "text": "Scheduled meeting", "state": "scheduled", "modifiers": [{ "key": "due", "value": "2025-03-01" }], "line": 8 }
+      ],
+      "migrated": [
+        { "text": "Migrated to backlog", "state": "migrated", "modifiers": [], "line": 9 }
+      ],
+      "irrelevant": [
+        { "text": "No longer relevant", "state": "irrelevant", "modifiers": [], "line": 10 }
+      ],
+      "event": [
+        { "text": "Team standup", "state": "event", "modifiers": [{ "key": "every", "value": "weekdays" }], "line": 11 }
+      ],
+      "priority": [
+        { "text": "Critical bug", "state": "priority", "modifiers": [{ "key": "due", "value": "2025-02-15" }, { "key": "hard", "value": null }], "line": 12 }
+      ]
+    },
+    "tags": [],
+    "links": []
+  },
+  "custom": {}
+}

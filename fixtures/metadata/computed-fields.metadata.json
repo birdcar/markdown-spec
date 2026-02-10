@@ -1,0 +1,26 @@
+{
+  "frontmatter": {
+    "title": "Computed Fields Test"
+  },
+  "computed": {
+    "wordCount": 29,
+    "readingTime": 1,
+    "tasks": {
+      "all": [],
+      "open": [],
+      "done": [],
+      "scheduled": [],
+      "migrated": [],
+      "irrelevant": [],
+      "event": [],
+      "priority": []
+    },
+    "tags": [],
+    "links": [
+      { "url": "https://example.com", "title": "Example", "line": 6 },
+      { "url": "https://img.example.com/photo.jpg", "title": null, "line": 7 },
+      { "url": "https://other.example.com", "title": null, "line": 9 }
+    ]
+  },
+  "custom": {}
+}

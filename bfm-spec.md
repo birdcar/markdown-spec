@@ -15,6 +15,9 @@ following extensions:
 2. **Extended Task Lists** — `[x]`, `[>]`, `[!]`, etc. in list items
 3. **Task Modifiers** — `//key:value` metadata annotations on tasks
 4. **Mentions** — `@username` inline references (context-dependent resolution)
+5. **YAML Front-matter** — `---` delimited metadata blocks
+6. **Inline Hashtags** — `#topic` inline tag references
+7. **Document Metadata** — Computed fields, task/tag extraction, and front-matter merging
 
 ---
 
@@ -337,17 +340,322 @@ URL, or other entity is determined by the consuming application.
 
 ---
 
-## 5. Conformance
+## 5. YAML Front-matter
 
-### 5.1 Levels
+BFM supports YAML front-matter as an optional metadata block at the beginning
+of a document.
+
+### 5.1 Syntax
+
+A front-matter block begins with `---` on the first line of the document and
+ends with a closing `---` on its own line:
+
+```
+---
+<yaml content>
+---
+```
+
+- The opening `---` MUST be the very first line of the document. No preceding
+  blank lines, whitespace, or content is permitted.
+- The closing `---` MUST appear on its own line.
+- Content between delimiters is parsed as YAML 1.2.
+- If the opening `---` is not the first line, it is treated as a thematic
+  break (per CommonMark), not front-matter.
+- An empty front-matter block (`---\n---`) is valid and produces an empty
+  metadata object.
+- Invalid YAML content SHOULD produce a parse error.
+
+### 5.2 AST
+
+Front-matter produces a `yaml` node as the first child of the root:
+
+```json
+{
+  "type": "yaml",
+  "value": "key1: value1\ntags:\n  - tag1",
+  "data": {
+    "key1": "value1",
+    "tags": ["tag1"]
+  }
+}
+```
+
+The `value` field contains the raw YAML string. The `data` field contains
+the parsed key-value structure.
+
+### 5.3 Interaction with CommonMark
+
+The opening `---` of front-matter would normally be parsed as a thematic
+break in CommonMark. BFM resolves this by only treating `---` as front-matter
+when it appears on the very first line of the document. All other occurrences
+of `---` on their own line are thematic breaks as usual.
+
+---
+
+## 6. Inline Hashtags
+
+Hashtags are inline references to topics or categories, using the `#` prefix.
+
+### 6.1 Syntax
+
+```
+#<identifier>
+```
+
+- The `#` MUST be preceded by whitespace, punctuation, or appear at the start
+  of inline content (not mid-word).
+- `identifier` matches `[a-zA-Z][a-zA-Z0-9_-]*` — alphanumeric with
+  underscores and hyphens (no dots, unlike mentions).
+- The identifier terminates at whitespace, punctuation (except `_`, `-`
+  within the identifier), or end of input.
+
+### 6.2 Disambiguation
+
+- `#` at the start of a line followed by a space is an ATX heading, not a
+  hashtag. Hashtags are inline-only.
+- `#` inside code spans or code blocks is literal text.
+- `#identifier` at the start of a line (no space after identifier) is a
+  hashtag if the line is within a paragraph context.
+
+### 6.3 AST
+
+```json
+{ "type": "hashtag", "identifier": "typescript" }
+```
+
+### 6.4 HTML Output
+
+Default rendering:
+
+```html
+<span class="hashtag">#typescript</span>
+```
+
+Implementations MAY provide configurable rendering (e.g., linking to a
+tag page).
+
+---
+
+## 7. Document Metadata
+
+BFM defines a document metadata model that implementations extract from
+parsed documents. This enables structured data access without consumers
+needing to walk the AST directly.
+
+### 7.1 Metadata Structure
+
+```
+DocumentMetadata {
+  frontmatter: Record<string, unknown>   // parsed YAML front-matter
+  computed: {
+    wordCount: number                     // body word count
+    readingTime: number                   // minutes, ceil(wordCount / wpm)
+    tasks: TaskCollection                 // extracted tasks by state
+    tags: string[]                        // unified deduplicated tags
+    links: LinkReference[]                // extracted links
+  }
+  custom: Record<string, unknown>         // user-defined computed fields
+}
+```
+
+### 7.2 Built-in Computed Fields
+
+#### wordCount
+
+Count of words in body content (all text nodes). Code blocks are included.
+Front-matter content is excluded.
+
+#### readingTime
+
+`ceil(wordCount / wordsPerMinute)` where default WPM is 200. Implementations
+SHOULD allow configuring the WPM value.
+
+#### tasks
+
+```
+TaskCollection {
+  all: ExtractedTask[]
+  open: ExtractedTask[]
+  done: ExtractedTask[]
+  scheduled: ExtractedTask[]
+  migrated: ExtractedTask[]
+  irrelevant: ExtractedTask[]
+  event: ExtractedTask[]
+  priority: ExtractedTask[]
+}
+
+ExtractedTask {
+  text: string               // raw text content of the task (excluding marker)
+  state: TaskState           // one of the 7 states
+  modifiers: TaskModifier[]  // [{key, value}] from //key:value annotations
+  line: number               // source line number
+}
+```
+
+#### tags
+
+Deduplicated array of tag strings from:
+1. The `tags` array field in YAML front-matter (if present)
+2. All inline `#hashtag` nodes in the body
+
+Tags are normalized to lowercase. Duplicates are removed preserving first
+occurrence order.
+
+#### links
+
+```
+LinkReference {
+  url: string
+  title: string | null
+  line: number
+}
+```
+
+Extracted from all link and image nodes in the body content.
+
+### 7.3 Backlinks (Collection-level)
+
+Backlinks are computed across a collection of documents. For each document,
+backlinks is the set of other documents that contain a link to it.
+
+Backlink computation is NOT a per-document computed field — it requires
+knowledge of the full collection. Implementations MUST provide a separate
+API for computing backlinks.
+
+---
+
+## 8. Computed Field Resolvers
+
+Implementations MUST support user-defined computed fields via a resolver
+interface.
+
+### 8.1 Resolver Contract
+
+A computed field resolver receives:
+1. The document AST (root node)
+2. The parsed front-matter data
+3. The built-in computed field values
+
+And returns a key-value map of custom computed fields.
+
+### 8.2 Execution Order
+
+1. Parse front-matter
+2. Parse body into AST
+3. Compute built-in fields (wordCount, readingTime, tasks, tags, links)
+4. Execute custom resolvers in registration order
+5. Later resolvers can access results from earlier resolvers
+
+### 8.3 Interface
+
+The specific interface is implementation-defined but MUST follow the
+pattern established by `MentionResolver` and `EmbedResolver`:
+- TypeScript: type/interface with a function signature
+- PHP: interface with a method signature
+
+---
+
+## 9. Front-matter Merging
+
+BFM defines a merge algorithm for combining multiple documents into one.
+
+### 9.1 Merge Order
+
+Documents are merged left-to-right. The first document is the base; each
+subsequent document's data is merged into the accumulator.
+
+### 9.2 Merge Rules
+
+For each key encountered across all documents:
+
+| Value Type | Rule |
+|------------|------|
+| Scalar (string, number, boolean, null) | Last-wins: later value replaces earlier |
+| Array | Concatenation: later items appended to earlier |
+| Object | Recursive: apply same rules at each nested level |
+| Type mismatch | Later value replaces entirely (e.g., scalar replaces array) |
+
+### 9.3 Body Merging
+
+Body content from all documents is concatenated in order, separated by
+two newlines (`\n\n`).
+
+### 9.4 Post-merge Computation
+
+After merging, computed fields (including custom resolvers) are recomputed
+on the merged result. This ensures `wordCount`, `tasks`, `tags`, etc.
+reflect the combined document.
+
+### 9.5 Configurable Strategy
+
+Implementations SHOULD support alternative merge strategies:
+- `last-wins` (default): as described above
+- `first-wins`: first value takes precedence for scalars
+- `error`: throw/raise on scalar conflicts (arrays still concatenate)
+- Custom resolver: user-provided function called for each conflict
+
+### 9.6 Example
+
+Given documents:
+
+```markdown
+---
+key1: value1
+tags:
+  - arrValue1
+  - arrValue2
+---
+
+Content from a.
+```
+
+```markdown
+---
+keyA: valueB
+tags:
+  - arrValueA
+  - arrValueB
+---
+
+Content from b.
+```
+
+Merged result:
+
+```markdown
+---
+key1: value1
+keyA: valueB
+tags:
+  - arrValue1
+  - arrValue2
+  - arrValueA
+  - arrValueB
+---
+
+Content from a.
+
+Content from b.
+```
+
+---
+
+## 10. Conformance
+
+### 10.1 Levels
 
 - **BFM Core**: CommonMark + Directive Blocks + Extended Task Lists +
-  Task Modifiers + Mentions. All conforming implementations MUST support
-  BFM Core.
-- **BFM Full**: BFM Core + all built-in directive types (callout, embed) +
-  all built-in modifier keys. Implementations SHOULD support BFM Full.
+  Task Modifiers + Mentions + YAML Front-matter + Inline Hashtags. All
+  conforming implementations MUST support BFM Core.
+- **BFM Extended**: BFM Core + Document Metadata model (§7) + Computed
+  Field Resolvers (§8) + Front-matter Merging (§9). Implementations SHOULD
+  support BFM Extended.
+- **BFM Full**: BFM Extended + all built-in directive types (callout, embed) +
+  all built-in modifier keys + all built-in computed fields (wordCount,
+  readingTime, tasks, tags, links). Implementations SHOULD support BFM Full.
 
-### 5.2 Testing
+### 10.2 Testing
 
 Conformance is verified against the shared fixture suite in the `bfm-spec`
 repository. Each fixture consists of:
@@ -355,15 +663,18 @@ repository. Each fixture consists of:
 - `<name>.md` — Input markdown
 - `<name>.ast.json` — Expected AST (normalized)
 - `<name>.html` — Expected HTML output (default renderer)
+- `<name>.metadata.json` — Expected metadata output (for BFM Extended fixtures)
 
 An implementation is conforming if it produces matching AST structures and
-HTML output for all fixtures in the suite.
+HTML output for all fixtures in the suite. BFM Extended conformance
+additionally requires matching metadata output.
 
-### 5.3 Extension
+### 10.3 Extension
 
 Implementations MAY add additional directive types, task states, modifier
-keys, and renderers beyond those specified here. Custom extensions MUST NOT
-alter the parsing behavior of the core syntax defined above.
+keys, computed fields, merge strategies, and renderers beyond those specified
+here. Custom extensions MUST NOT alter the parsing behavior of the core
+syntax defined above.
 
 ---
 
@@ -391,4 +702,10 @@ modifier_value   := .+?  (until next "//" or end of inline)
 
 mention          := "@" identifier
 identifier       := [a-zA-Z][a-zA-Z0-9._-]*
+
+frontmatter      := "---" NL yaml_content "---" NL
+yaml_content     := .+?  (valid YAML 1.2)
+
+hashtag          := "#" hashtag_ident
+hashtag_ident    := [a-zA-Z][a-zA-Z0-9_-]*
 ```
