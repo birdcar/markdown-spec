@@ -14,7 +14,7 @@ following extensions:
 1. **Directive Blocks** — `@name` / `@endname` fenced containers
 2. **Extended Task Lists** — `[x]`, `[>]`, `[!]`, etc. in list items
 3. **Task Modifiers** — `//key:value` metadata annotations on tasks
-4. **Mentions** — `@username` inline references (context-dependent resolution)
+4. **Mentions** — `@username` and `@platform:username` inline references
 5. **YAML Front-matter** — `---` delimited metadata blocks
 6. **Inline Hashtags** — `#topic` inline tag references
 7. **Document Metadata** — Computed fields, task/tag extraction, and front-matter merging
@@ -304,20 +304,37 @@ this is not required for conformance.
 
 ## 4. Mentions
 
-Mentions are inline references to users or entities, using the `@` prefix.
+Mentions are inline references to users, entities, or platform accounts,
+using the `@` prefix. BFM supports two forms: simple mentions and
+platform-prefixed mentions.
 
 ### 4.1 Syntax
+
+**Simple mention:**
 
 ```
 @<identifier>
 ```
 
+**Platform-prefixed mention:**
+
+```
+@<platform>:<platform-identifier>
+```
+
 - The `@` MUST be preceded by whitespace, punctuation, or appear at the start
   of inline content (not mid-word).
-- `identifier` matches `[a-zA-Z][a-zA-Z0-9._-]*` — alphanumeric with dots,
-  underscores, and hyphens.
-- The identifier terminates at whitespace, punctuation (except `.`, `_`, `-`
-  within the identifier), or end of input.
+- For simple mentions, `identifier` matches `[a-zA-Z][a-zA-Z0-9._-]*` —
+  alphanumeric with dots, underscores, and hyphens.
+- For platform-prefixed mentions, `platform` matches `[a-z]+` and
+  `platform-identifier` matches `[a-zA-Z0-9._@-]+` — alphanumeric with dots,
+  underscores, hyphens, and `@` (to support federated handles like Mastodon).
+- The identifier terminates at whitespace, punctuation (except `.`, `_`, `-`,
+  `@` within the identifier), or end of input.
+- When a mention contains a `:`, the portion before `:` is parsed as the
+  `platform` and the portion after as the `platform-identifier`. This applies
+  regardless of whether the platform is recognized — recognition only affects
+  rendering behavior.
 
 ### 4.2 Disambiguation
 
@@ -328,15 +345,68 @@ at the start of a line is parsed as a directive block, NOT a mention.
 
 ### 4.3 Resolution
 
-Mention resolution is **implementation-defined**. The parser produces an AST
-node with the raw identifier. How that identifier maps to a person, profile,
-URL, or other entity is determined by the consuming application.
+Simple mention resolution is **implementation-defined**. The parser produces
+an AST node with the raw identifier. How that identifier maps to a person,
+profile, URL, or other entity is determined by the consuming application.
+
+Platform-prefixed mentions are resolved using platform-specific URL templates
+(see §4.6). Unrecognized platforms are rendered as plain mentions without
+links.
 
 ### 4.4 AST
+
+**Simple mention:**
 
 ```json
 { "type": "mention", "identifier": "sarah" }
 ```
+
+**Platform-prefixed mention:**
+
+```json
+{ "type": "mention", "identifier": "birdcar", "platform": "github" }
+```
+
+The `platform` field is present only for platform-prefixed mentions.
+
+### 4.5 Built-in Platforms
+
+| Platform   | Prefix     | URL Template                                                           |
+|------------|------------|------------------------------------------------------------------------|
+| GitHub     | `github`   | `https://github.com/{identifier}`                                      |
+| Twitter/X  | `twitter`  | `https://twitter.com/{identifier}`                                     |
+| Bluesky    | `bluesky`  | `https://bsky.app/profile/{identifier}`                                |
+| Mastodon   | `mastodon` | Derived from handle: `user@instance` → `https://{instance}/@{user}`    |
+| npm        | `npm`      | `https://www.npmjs.com/package/{identifier}`                           |
+| LinkedIn   | `linkedin` | `https://www.linkedin.com/in/{identifier}`                             |
+
+Implementations MAY define additional platforms. Unknown platforms MUST still
+be parsed as platform mentions in the AST but SHOULD be rendered without
+links (as plain mention spans).
+
+### 4.6 HTML Output
+
+**Simple mention (default):**
+
+```html
+<span class="mention">@sarah</span>
+```
+
+**Recognized platform mention:**
+
+```html
+<a href="{resolved-url}" class="mention mention--{platform}"
+   title="{Platform}: {identifier}" rel="noopener noreferrer">@{platform}:{identifier}</a>
+```
+
+**Unrecognized platform mention:**
+
+```html
+<span class="mention">@{platform}:{identifier}</span>
+```
+
+Implementations MAY provide configurable rendering for simple mentions
+(e.g., resolving `@sarah` to a user profile link).
 
 ---
 
@@ -700,7 +770,9 @@ task_modifier    := "//" key (":" value)?
 modifier_key     := [a-z][a-z0-9]*
 modifier_value   := .+?  (until next "//" or end of inline)
 
-mention          := "@" identifier
+mention          := "@" (platform ":" platform_ident | identifier)
+platform         := [a-z]+
+platform_ident   := [a-zA-Z0-9._@-]+
 identifier       := [a-zA-Z][a-zA-Z0-9._-]*
 
 frontmatter      := "---" NL yaml_content "---" NL

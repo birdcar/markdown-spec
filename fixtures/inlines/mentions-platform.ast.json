@@ -1,0 +1,27 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "paragraph",
+      "children": [
+        { "type": "text", "value": "Follow " },
+        { "type": "mention", "identifier": "birdcar", "platform": "github" },
+        { "type": "text", "value": " and " },
+        { "type": "mention", "identifier": "birdcar", "platform": "twitter" },
+        { "type": "text", "value": " for updates. Also " },
+        { "type": "mention", "identifier": "birdcar.bsky.social", "platform": "bluesky" },
+        { "type": "text", "value": " and " },
+        { "type": "mention", "identifier": "user@mastodon.social", "platform": "mastodon" },
+        { "type": "text", "value": " are great. Check " },
+        { "type": "mention", "identifier": "express", "platform": "npm" },
+        { "type": "text", "value": " and connect on " },
+        { "type": "mention", "identifier": "birdcar", "platform": "linkedin" },
+        { "type": "text", "value": ". Plain " },
+        { "type": "mention", "identifier": "birdcar" },
+        { "type": "text", "value": " still works. Unknown " },
+        { "type": "mention", "identifier": "foo", "platform": "unknown" },
+        { "type": "text", "value": " stays plain." }
+      ]
+    }
+  ]
+}

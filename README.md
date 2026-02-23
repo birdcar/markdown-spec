@@ -54,6 +54,7 @@ fixtures/
     tasks-basic.*
     tasks-modifiers.*
     mentions-basic.*
+    mentions-platform.*
     hashtags-basic.*
     hashtags-edge-cases.*
   blocks/           # Block-level features

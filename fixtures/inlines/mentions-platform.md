@@ -1,0 +1,1 @@
+Follow @github:birdcar and @twitter:birdcar for updates. Also @bluesky:birdcar.bsky.social and @mastodon:user@mastodon.social are great. Check @npm:express and connect on @linkedin:birdcar. Plain @birdcar still works. Unknown @unknown:foo stays plain.
