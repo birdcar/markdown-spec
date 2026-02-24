@@ -7,12 +7,15 @@ Canonical specification and shared test fixture suite for BFM — a custom markd
 BFM is a superset of CommonMark and GFM (minus GFM task lists) that adds:
 
 - **YAML front-matter** — `---` delimited metadata blocks parsed into structured data
-- **Directive blocks** — `@callout`/`@endcallout`, `@embed`/`@endembed`
+- **Directive blocks** — 11 built-in directives:
+  - *Container:* `@callout`, `@details`, `@tabs`/`@tab`, `@figure`, `@aside`
+  - *Leaf:* `@embed`, `@include`, `@query`, `@toc`, `@math`, `@endnotes`
+- **Footnotes** — Pandoc-style `[^label]` references and `[^label]: content` definitions
 - **Extended task lists** — `[x]`, `[>]`, `[<]`, `[-]`, `[o]`, `[!]` state markers
 - **Task modifiers** — `//due:2025-03-01`, `//every:quarter`, `//hard`
 - **Mentions** — `@username` inline references
 - **Hashtags** — `#project` inline tags
-- **Metadata extraction** — computed fields (word count, reading time, tasks, tags, links)
+- **Metadata extraction** — computed fields (word count, reading time, tasks, tags, links, footnotes)
 - **Document merging** — deep recursive merge of front-matter across files
 
 See `bfm-spec.md` for the full specification.
@@ -56,13 +59,24 @@ fixtures/
     mentions-basic.*
     mentions-platform.*
     hashtags-basic.*
+    footnotes-basic.*
+    footnotes-edge-cases.*
     hashtags-edge-cases.*
   blocks/           # Block-level features
+    aside-basic.*
     callout-basic.*
+    details-basic.*
+    endnotes-basic.*
+    figure-basic.*
     frontmatter-basic.*
     frontmatter-empty.*
     frontmatter-complex.*
+    include-basic.*
     kitchen-sink.*
+    math-basic.*
+    query-basic.*
+    tabs-basic.*
+    toc-basic.*
   metadata/         # Metadata extraction
     tasks-extraction.*
     tags-extraction.*
