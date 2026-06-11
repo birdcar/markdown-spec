@@ -1522,6 +1522,39 @@ keys, computed fields, merge strategies, and renderers beyond those specified
 here. Custom extensions MUST NOT alter the parsing behavior of the core
 syntax defined above.
 
+#### 11.3.1 Directive Registration (reference implementation)
+
+A conforming implementation MAY expose a directive registration mechanism that
+lets consumers declare custom directive types without modifying the parser. The
+reference implementation does so via `remarkBfm({ directives })` (and its
+lower-level `remarkBfmDirectives({ directives })`).
+
+A **directive definition** has the following shape:
+
+```
+DirectiveDefinition ::= {
+  kind:      "container" | "leaf"
+  toHast?:   HastData | (DirectiveBlockNode -> HastData)
+  transform?: (DirectiveBlockNode, DirectiveContext) -> void
+}
+```
+
+- `kind` controls how the body is parsed (§1.3): `"container"` re-parses the
+  body as BFM markdown; `"leaf"` stores it as raw text.
+- `toHast` is a shorthand for attaching HTML serialization hints (compatible
+  with the `remark-rehype` bridge) onto the node. It MAY be a static object
+  or a function that receives the node and returns one.
+- `transform` is an escape hatch that receives the node and a context object
+  (which includes the full document tree). When `transform` is present,
+  `toHast` is ignored.
+
+Custom definitions supplied at call time are merged with the built-in registry;
+a custom definition with the same name as a built-in MUST take precedence.
+
+Directives that do not appear in the registry MUST still parse and appear in
+the AST. The implementation SHOULD treat them as `"container"` by default and
+MUST NOT attach render data to them.
+
 ---
 
 ## Appendix A: Grammar Summary
